@@ -1,0 +1,470 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Details</h1>
+    <h2>Unverified Passengers</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Gender</th>
+            <th>Action</th>
+        </tr>
+        <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.userData.name %></td>
+                <td><%= user.userData.email %></td>
+                <td><%= user.userData.address %></td>
+                <td><%= user.userData.gender %></td>
+                <td>
+                    <form action="/verify/<%= user._id %>" method="POST">
+                        <button type="submit">Verify</button>
+                    </form>
+                </td>
+            </tr>
+        <% }); %>
+    </table>
+
+    <h2>Verified Passengers</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Hash Value</th>
+        </tr>
+        <% verifiedUsers.forEach(user => { %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.hashValue %></td>
+            </tr>
+        <% }); %>
+    </table>
+    <h2>Unverified drivers</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Gender</th>
+            <th>RC Documents</th>
+            <th>Car Number</th>
+            <th>Car model</th>
+            <th>Number of seats</th>
+            <th>Action</th>
+        </tr>
+        <% users1.forEach(user1 => { %>
+            <tr>
+                <td><%= user1.userData1.name %></td>
+                <td><%= user1.userData1.email %></td>
+                <td><%= user1.userData1.address %></td>
+                <td><%= user1.userData1.gender %></td>
+                <td><%= user1.userData1.rcDocuments %></td>
+                <td><%= user1.userData1.carNumber%></td>
+                <td><%= user1.userData1.carModel %></td>
+                <td><%= user1.userData1.seats %></td>
+                <td>
+                    <form action="/verify1/<%= user1._id %>" method="POST">
+                        <button type="submit">Verify</button>
+                    </form>
+                </td>
+            </tr>
+        <% }); %>
+    </table>
+
+    <h2>Verified Drivers</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Hash Value</th>
+        </tr>
+        <% verifiedUsers1.forEach(user1 => { %>
+            <tr>
+                <td><%= user1.name %></td>
+                <td><%= user1.hashValue %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.5/dist/web3.min.js"></script>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #A55EEA, #FF7675);
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    height: 100vh;
+    margin: 0;
+
+  }
+
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 8px;
+            background: linear-gradient(to right, #FFA500, #4B0082);
+        }
+        th, td {
+            /* border: 1px solid #dddddd; */
+            text-align: left;
+            padding: 8px;
+            color: #fff;
+        }
+        /* tr:nth-child(even) {
+            background-color: #f2f2f2;
+        } */
+        form {
+            display: inline;
+        }
+        .container-unverifiedpassenger {
+    background: linear-gradient(to right, #FFA500, #4B0082);
+    /* max-width: 400px; */
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.container-verifiedpassenger {
+    background: linear-gradient(to right, #FFA500, #4B0082);
+    /* max-width: 400px; */
+    margin: 20px auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.container-unverifieddrivers {
+    background: linear-gradient(to right, #FFA500, #4B0082);
+    /* max-width: 400px; */
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.container-verifieddrivers {
+    background: linear-gradient(to right, #FFA500, #4B0082);
+    /* max-width: 400px; */
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.container-verifieddrivers:hover {
+    transform: translateY(-8px);
+  }
+  .container-verifiedpassenger:hover {
+    transform: translateY(-8px);
+  }
+  .container-unverifiedpassenger:hover {
+    transform: translateY(-8px);
+  }
+  .container-unverifieddrivers:hover {
+    transform: translateY(-8px);
+  }
+  button {
+     /* width: 12px;  */
+   /* padding: 12px 20px; */
+    border: none;
+    border-radius: 5px; 
+    background: linear-gradient(to right, #A55EEA, #FF7675);
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+     /* margin-right: 5px;  */
+    margin-bottom: 5px;
+}
+
+/* button:last-child {
+    margin-right: 0; /* Remove margin from last button */
+/* } */ 
+
+button:hover {
+    background: linear-gradient(to right, #9448ED, #FF6B6B);
+}
+
+h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+  h1 {
+    color: #fff;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+  
+  label {
+    color: #fff;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .button {
+     width: 12px; 
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px; 
+    background: linear-gradient(to right, #A55EEA, #FF7675);
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+     /* margin-right: 5px;  */
+    margin-bottom: 5px;
+}
+
+/* button:last-child {
+    margin-right: 0; /* Remove margin from last button */
+/* } */ 
+
+.button:hover {
+    background: linear-gradient(to right, #9448ED, #FF6B6B);
+}
+    </style>
+</head>
+<body>
+    
+    <h1>ADMIN DASHBOARD</h1>
+    <h2>Unverified Passengers</h2>
+    <div class="container-unverifiedpassenger">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Gender</th>
+            <th>Action</th>
+        </tr>
+        <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.userData.name %></td>
+                <td><%= user.userData.email %></td>
+                <td><%= user.userData.address %></td>
+                <td><%= user.userData.gender %></td>
+                <td>
+                    <form action="/verify/<%= user._id %>" method="POST">
+                        <button type="submit">Verify</button>
+                        
+                    </form>
+                    <button onclick="signAndSaveMessage('<%= user.userData.name %> with the ipfs hash of <%= user.hashValue %> and meta mask wallet address <%= user.userData.walletAddress %> is verified')">Sign Message</button>
+                </td>
+            </tr>
+        <% }); %>
+    </table>
+</div>
+
+    <h2>Verified Passengers</h2>
+    <div class="container-verifiedpassenger">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Hash Value</th>
+        </tr>
+        <% verifiedUsers.forEach(user => { %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.hashValue %></td>
+            </tr>
+        <% }); %>
+    </table>
+</div>
+
+    <h2>Unverified drivers</h2>
+    <div class="container-unverifieddrivers">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Gender</th>
+            <th>RC Documents</th>
+            <th>Car Number</th>
+            <th>Car model</th>
+            <th>Number of seats</th>
+            <th>Action</th>
+        </tr>
+        <% users1.forEach(user1 => { %>
+            <tr>
+                <td><%= user1.userData1.name %></td>
+                <td><%= user1.userData1.email %></td>
+                <td><%= user1.userData1.address %></td>
+                <td><%= user1.userData1.gender %></td>
+                <!-- <td><%= user1.userData1.rcDocuments %></td> -->
+                <td><a href="<%= user1.userData1.rcDocuments %>" class="button">View Document</a></td>
+                <td><%= user1.userData1.carNumber%></td>
+                <td><%= user1.userData1.carModel %></td>
+                <td><%= user1.userData1.seats %></td>
+                <td>
+                    <form action="/verify1/<%= user1._id %>" method="POST">
+                        <button type="submit">Verify</button>
+                    </form>
+                        <button onclick="signAndSaveMessage('<%= user1.userData1.name %> with the ipfs hash of <%= user1.hashValue %> and meta mask wallet address <%= user1.userData1.walletAddress %> is verified')">Sign Message</button>
+                    
+                </td>
+            </tr>
+        <% }); %>
+    </table>
+</div>
+
+    <h2>Verified Drivers</h2>
+    <div class="container-verifieddrivers">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Hash Value</th>
+        </tr>
+        <% verifiedUsers1.forEach(user1 => { %>
+            <tr>
+                <td><%= user1.name %></td>
+                <td><%= user1.hashValue %></td>
+            </tr>
+        <% }); %>
+    </table>
+</div>
+</body>
+    <!-- Similar code for other tables -->
+    <!-- <script>
+        // Define the contract address and ABI
+        const contractAddress = '0xCeD8E5d96da547Cb4C9f49C83159f128e4364484';
+        const contractABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_message",
+                        "type": "string"
+                    }
+                ],
+                "name": "signMessage",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            }
+        ];
+
+        // Create a web3 instance using the given provider
+        const web3 = new Web3(window.ethereum);
+
+        // Create a contract instance
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+        // Function to sign a message
+        async function signMessage(name) {
+            const message = `Signing message for ${name}`;
+            
+            try {
+                // Request account access if needed
+                await ethereum.enable();
+
+                // Sign message using MetaMask
+                const accounts = await web3.eth.getAccounts();
+                const result = await web3.eth.personal.sign(message, accounts[0]);
+
+                // Display success message
+                alert(`Message signed successfully for ${name}! Signature: ${result}`);
+            } catch (error) {
+                console.error(error);
+                alert(`Error signing message for ${name}: ${error.message}`);
+            }
+        }
+    </script> -->
+    <script>
+        // Define the contract address and ABI
+        const contractAddress = '0xCeD8E5d96da547Cb4C9f49C83159f128e4364484';
+        const contractABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_message",
+                        "type": "string"
+                    }
+                ],
+                "name": "signMessage",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            }
+        ];
+    
+        // Create a web3 instance using the given provider
+        const web3 = new Web3(window.ethereum);
+    
+        // Create a contract instance
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+    
+        // Function to sign and save the message
+        async function signAndSaveMessage(name) {
+            const message = `Signing message for ${name}`;
+    
+            try {
+                // Request account access if needed
+                await ethereum.enable();
+    
+                // Get the current Ethereum account
+                const accounts = await web3.eth.getAccounts();
+                const account = accounts[0];
+    
+                // Send a transaction to sign and save the message
+                const tx = await contract.methods.signMessage(message).send({
+                    from: account
+                });
+                const result = await web3.eth.personal.sign(message, accounts[0]);
+                // Display success message
+                console.log('Transaction receipt:', tx);
+                alert(`Message signed and saved successfully for ${name}! Signature: ${result}`);
+            } catch (error) {
+                console.error('Error signing and saving message:', error);
+                alert(`Error signing and saving message for ${name}: ${error.message}`);
+            }
+        }
+    </script>
+    
+</body>
+</html>
