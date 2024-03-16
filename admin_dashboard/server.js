@@ -108,7 +108,7 @@ app.post('/verify/:id', async (req, res) => {
   const userId = req.params.id;
   try {
     console.log('User ID:', userId); // Debug logging
-    const db = client.db('Userdetails');
+    const db = client.db('Dapp');
     const userCollection = db.collection('passengerdetails');
     const verifiedCollection = db.collection('passengerverified');
     
@@ -152,7 +152,7 @@ app.post('/verify1/:id', async (req, res) => {
   const userId1 = req.params.id;
   try {
     console.log('User ID:', userId1); // Debug logging
-    const db = client.db('Userdetails');
+    const db = client.db('Dapp');
     const userCollection1 = db.collection('driverdetails');
     const verifiedCollection1 = db.collection('driververified');
     console.log('Trying to find user with ID:', userId1); // Debug logging
