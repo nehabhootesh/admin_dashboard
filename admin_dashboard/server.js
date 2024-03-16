@@ -8,7 +8,7 @@ const port = 3100;
 
 // Step 4: Connect to MongoDB
 // const uri = 'mongodb://localhost:27017';
-const uri = 'mongodb+srv://nehab:Tomnjerry@cluster0.c2g9sor.mongodb.net/Userdetails?retryWrites=true&w=majority';
+const uri = 'mongodb+srv://nehab:Tomnjerry@cluster0.c2g9sor.mongodb.net/Dapp?retryWrites=true&w=majority';
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 client.connect().then(() => {
@@ -20,7 +20,7 @@ client.connect().then(() => {
 // Step 5: Define route to fetch data
 app.get('/', async (req, res) => {
   try {
-    const db = client.db('Userdetails');
+    const db = client.db('Dapp');
     const userCollection = db.collection('passengerdetails');
     const verifiedCollection = db.collection('passengerverified');
     const userCollection1 = db.collection('driverdetails');
